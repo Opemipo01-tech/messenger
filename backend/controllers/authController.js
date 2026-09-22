@@ -13,12 +13,6 @@ export async function register(req, res) {
       lastName,
     } = req.body;
 
-    if (!username || !email || !password || !firstName || !lastName) {
-      return res.status(400).json({
-        message: "All fields are required",
-      });
-    }
-
     const existingUser = await prisma.user.findFirst({
       where: {
         OR: [
@@ -69,12 +63,6 @@ export async function register(req, res) {
 export async function login(req, res) {
   try {
     const { identifier, password } = req.body;
-
-    if (!identifier || !password) {
-      return res.status(400).json({
-        message: "Username/email and password are required",
-      });
-    }
 
     const user = await prisma.user.findFirst({
       where: {
