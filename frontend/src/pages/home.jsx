@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { getCurrentUser } from "../services/authApi";
 import Sidebar from "../components/sidebar";
+import Chat from "../components/chat";
 
 function Home() {
   const navigate = useNavigate();
@@ -49,26 +50,14 @@ function Home() {
 
   return (
     <main>
+      <Sidebar onSelectUser={handleSelectUser}
+        token={localStorage.getItem("token")}
+      />
 
       <section>
         <h1>Hello, {user.firstName}</h1>
 
-        <p>Welcome to the messaging app.</p>
-
-        {selectedUser && (
-          <div>
-            <h2>
-              Selected user: {selectedUser.firstName}{" "}
-              {selectedUser.lastName}
-            </h2>
-
-            <p>@{selectedUser.username}</p>
-          </div>
-        )}
-        
-      <Sidebar 
-       token={localStorage.getItem("token")}
-      onSelectUser={handleSelectUser} />
+        <Chat selectedUser={selectedUser} />
 
         <button onClick={handleLogout}>
           Logout
