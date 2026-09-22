@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import passport from "./passport/passport.js";
 import authRoutes from "./routes/authRouter.js";
+import userRouter from "./routes/userRoutes.js";
 
 const app = express();
 
@@ -18,10 +19,8 @@ app.use(express.json());
 app.use(passport.initialize());
 
 app.use("/api/auth", authRoutes);
+app.use("/api/users",userRouter);
 
-app.get("/",(req,res)=> {
-    res.send("hi")
-})
 
 const PORT = 3000;
 
