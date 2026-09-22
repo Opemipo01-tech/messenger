@@ -37,7 +37,7 @@ function Login() {
     <main>
       <h1>Login</h1>
 
-      {error && <p>{error}</p>}
+       {error && <p role="alert">{error}</p>}
 
       <form onSubmit={handleSubmit}>
         <input

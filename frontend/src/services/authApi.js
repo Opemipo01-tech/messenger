@@ -12,6 +12,10 @@ export async function registerUser(userData) {
   const data = await response.json();
 
   if (!response.ok) {
+    if (data.errors) {
+      throw new Error(data.errors.map((error) => error.msg).join(", "));
+    }
+
     throw new Error(data.message || "Registration failed");
   }
 
@@ -30,6 +34,10 @@ export async function loginUser(credentials) {
   const data = await response.json();
 
   if (!response.ok) {
+    if (data.errors) {
+      throw new Error(data.errors.map((error) => error.msg).join(", "));
+    }
+
     throw new Error(data.message || "Login failed");
   }
 
@@ -46,7 +54,7 @@ export async function getCurrentUser(token) {
   const data = await response.json();
 
   if (!response.ok) {
-    throw new Error(data.message || "Failed to get user");
+    throw new Error(data.message || "Failed to get current user");
   }
 
   return data;

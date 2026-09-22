@@ -32,15 +32,24 @@ function Home() {
     loadUser();
   }, [navigate]);
 
+  function handleLogout() {
+  localStorage.removeItem("token");
+  navigate("/login");
+}
   if (loading) {
     return <p>Loading...</p>;
   }
+
 
   return (
     <main>
       <h1>Hello, {user.firstName}</h1>
 
       <p>Welcome to the messaging app.</p>
+
+      <button onClick={handleLogout}>
+  Logout
+</button>
     </main>
   );
 }
