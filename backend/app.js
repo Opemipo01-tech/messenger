@@ -3,6 +3,7 @@ import cors from "cors";
 import passport from "./passport/passport.js";
 import authRoutes from "./routes/authRouter.js";
 import userRouter from "./routes/userRoutes.js";
+import messageRouter from "./routes/messageRoutes.js";
 
 const app = express();
 
@@ -20,6 +21,7 @@ app.use(passport.initialize());
 
 app.use("/api/auth", authRoutes);
 app.use("/api/users",userRouter);
+app.use("/api/messages",messageRouter);
 
 
 const PORT = 3000;
