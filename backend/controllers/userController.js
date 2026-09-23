@@ -2,12 +2,38 @@ import { prisma } from "../prisma_db/prisma.js";
 
 export async function getUsers(req, res) {
   try {
+    const search = req.query.search?.trim();
+
     const users = await prisma.user.findMany({
       where: {
         id: {
           not: req.user.id,
         },
+
+        ...(search && {
+          OR: [
+            {
+              username: {
+                contains: search,
+                mode: "insensitive",
+              },
+            },
+            {
+              firstName: {
+                contains: search,
+                mode: "insensitive",
+              },
+            },
+            {
+              lastName: {
+                contains: search,
+                mode: "insensitive",
+              },
+            },
+          ],
+        }),
       },
+
       select: {
         id: true,
         username: true,
@@ -15,9 +41,13 @@ export async function getUsers(req, res) {
         lastName: true,
         avatarUrl: true,
       },
+
+      orderBy: {
+        firstName: "asc",
+      },
     });
 
-    res.status(200).json(users);
+    res.json(users);
   } catch (error) {
     console.error(error);
 
