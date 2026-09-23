@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { authenticate } from "../middleware/authMiddleware.js";
-import { getUsers, getUser } from "../controllers/userController.js";
+import { getUsers, getUser,updateProfile } from "../controllers/userController.js";
+import { validateProfileUpdate } from "../middleware/validateProfileUpdate.js";
 
 const userRouter = Router();
 
@@ -15,5 +16,6 @@ userRouter.get(
   authenticate,
   getUser
 );
+userRouter.patch("/profile",authenticate,validateProfileUpdate,updateProfile);
 
 export default userRouter;
