@@ -11,6 +11,7 @@ app.use(
   cors({
     origin: [
       "http://localhost:5173",
+      "https://messenger-alpha-black.vercel.app/",
     ],
   })
 );
