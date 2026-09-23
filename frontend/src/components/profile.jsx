@@ -80,10 +80,10 @@ function Profile() {
       setUser(data.user);
 
       setFormData({
-        firstName: data.user.firstName || "",
-        lastName: data.user.lastName || "",
-        username: data.user.username || "",
-        bio: data.user.bio || "",
+        firstName: user.firstName || "",
+        lastName: user.lastName || "",
+        username: user.username || "",
+        bio: user.bio || "",
       });
 
       setSuccess("Profile updated successfully.");

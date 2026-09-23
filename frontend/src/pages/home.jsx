@@ -76,7 +76,9 @@ function Home() {
         </header>
 
         <div className="home-content">
-          <Chat selectedUser={selectedUser} />
+          <Chat selectedUser={selectedUser} 
+                currentUser={user}
+          />
         </div>
       </section>
     </main>

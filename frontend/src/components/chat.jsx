@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { getMessages, sendMessage } from "../services/messageApi";
 import "../styles/chat.css";
 
-function Chat({ selectedUser }) {
+function Chat({ selectedUser, currentUser }) {
   const [messages, setMessages] = useState([]);
   const [content, setContent] = useState("");
   const [loading, setLoading] = useState(false);
@@ -11,21 +11,18 @@ function Chat({ selectedUser }) {
 
   useEffect(() => {
     async function loadMessages() {
-      if (!selectedUser) {
-        return;
-      }
+      if (!selectedUser) return;
 
       const token = localStorage.getItem("token");
 
-      if (!token) {
-        return;
-      }
+      if (!token) return;
 
       setLoading(true);
       setError("");
 
       try {
         const data = await getMessages(selectedUser.id, token);
+
         setMessages(data);
       } catch (error) {
         console.error(error);
@@ -47,9 +44,7 @@ function Chat({ selectedUser }) {
 
     const token = localStorage.getItem("token");
 
-    if (!token) {
-      return;
-    }
+    if (!token) return;
 
     setSending(true);
     setError("");
@@ -78,9 +73,7 @@ function Chat({ selectedUser }) {
   if (!selectedUser) {
     return (
       <section className="chat">
-        <div className="chat-empty">
-          <p>Select a user to start chatting.</p>
-        </div>
+        <p>Select a user to start chatting.</p>
       </section>
     );
   }
@@ -93,25 +86,34 @@ function Chat({ selectedUser }) {
         </h2>
       </header>
 
-      {loading && (
-        <div className="chat-empty">
-          <p>Loading messages...</p>
-        </div>
-      )}
+      {loading && <p>Loading messages...</p>}
 
       {error && <p className="chat-error">{error}</p>}
 
-      <div className="chat-messages">
-        {messages.map((message) => (
-          <div className="message" key={message.id}>
-            <p>{message.content}</p>
-          </div>
-        ))}
+      <div className="messages">
+        {messages.map((message) => {
+          const isMine = message.senderId === currentUser.id;
+
+          return (
+            <div
+              key={message.id}
+              className={`message ${
+                isMine
+                  ? "message--mine"
+                  : "message--received"
+              }`}
+            >
+              <p>{message.content}</p>
+            </div>
+          );
+        })}
       </div>
 
-      <form className="message-form" onSubmit={handleSendMessage}>
+      <form
+        className="message-form"
+        onSubmit={handleSendMessage}
+      >
         <input
-          className="message-input"
           type="text"
           value={content}
           onChange={(event) => setContent(event.target.value)}
@@ -120,7 +122,6 @@ function Chat({ selectedUser }) {
         />
 
         <button
-          className="message-send"
           type="submit"
           disabled={sending || !content.trim()}
         >
