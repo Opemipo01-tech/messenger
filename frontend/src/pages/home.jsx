@@ -10,6 +10,7 @@ function Home() {
 
   const [user, setUser] = useState(null);
   const [selectedUser, setSelectedUser] = useState(null);
+  const [mobileView, setMobileView] = useState("users");
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -43,6 +44,11 @@ function Home() {
 
   function handleSelectUser(user) {
     setSelectedUser(user);
+    setMobileView("chat");
+  }
+
+  function handleBackToUsers() {
+    setMobileView("users");
   }
 
   if (loading) {
@@ -51,18 +57,35 @@ function Home() {
 
   return (
     <main className="home-page">
-      <Sidebar
-        onSelectUser={handleSelectUser}
-        selectedUser={selectedUser}
-        token={localStorage.getItem("token")}
-      />
+      <div
+        className={`mobile-view ${
+          mobileView === "users"
+            ? "mobile-view--active"
+            : ""
+        }`}
+      >
+        <Sidebar
+          onSelectUser={handleSelectUser}
+          selectedUser={selectedUser}
+          token={localStorage.getItem("token")}
+        />
+      </div>
 
-      <section className="home-main">
+      <section
+        className={`home-main ${
+          mobileView === "chat"
+            ? "home-main--mobile-active"
+            : ""
+        }`}
+      >
         <header className="home-header">
           <h1>Hello, {user.firstName}</h1>
 
           <div className="home-header-actions">
-            <Link to="/profile" className="profile-button">
+            <Link
+              to="/profile"
+              className="profile-button"
+            >
               Profile
             </Link>
 
@@ -76,8 +99,10 @@ function Home() {
         </header>
 
         <div className="home-content">
-          <Chat selectedUser={selectedUser} 
-                currentUser={user}
+          <Chat
+            selectedUser={selectedUser}
+            currentUser={user}
+            onBack={handleBackToUsers}
           />
         </div>
       </section>

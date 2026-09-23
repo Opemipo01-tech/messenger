@@ -1,8 +1,15 @@
 import { useEffect, useState } from "react";
-import { getMessages, sendMessage } from "../services/messageApi";
+import {
+  getMessages,
+  sendMessage,
+} from "../services/messageApi";
 import "../styles/chat.css";
 
-function Chat({ selectedUser, currentUser }) {
+function Chat({
+  selectedUser,
+  currentUser,
+  onBack,
+}) {
   const [messages, setMessages] = useState([]);
   const [content, setContent] = useState("");
   const [loading, setLoading] = useState(false);
@@ -21,7 +28,10 @@ function Chat({ selectedUser, currentUser }) {
       setError("");
 
       try {
-        const data = await getMessages(selectedUser.id, token);
+        const data = await getMessages(
+          selectedUser.id,
+          token
+        );
 
         setMessages(data);
       } catch (error) {
@@ -38,7 +48,11 @@ function Chat({ selectedUser, currentUser }) {
   async function handleSendMessage(event) {
     event.preventDefault();
 
-    if (!content.trim() || !selectedUser || sending) {
+    if (
+      !content.trim() ||
+      !selectedUser ||
+      sending
+    ) {
       return;
     }
 
@@ -72,8 +86,17 @@ function Chat({ selectedUser, currentUser }) {
 
   if (!selectedUser) {
     return (
-      <section className="chat">
-        <p>Select a user to start chatting.</p>
+      <section className="chat chat--empty">
+        <div className="empty-chat">
+          <div className="empty-chat-icon">💬</div>
+
+          <h2>Welcome to Messages</h2>
+
+          <p>
+            Select a user from the list to start
+            chatting.
+          </p>
+        </div>
       </section>
     );
   }
@@ -81,18 +104,47 @@ function Chat({ selectedUser, currentUser }) {
   return (
     <section className="chat">
       <header className="chat-header">
-        <h2>
-          {selectedUser.firstName} {selectedUser.lastName}
-        </h2>
+        <button
+          type="button"
+          className="chat-back-button"
+          onClick={onBack}
+          aria-label="Back to users"
+        >
+          ←
+        </button>
+
+        <div className="chat-user-avatar">
+          {selectedUser.firstName
+            .charAt(0)
+            .toUpperCase()}
+        </div>
+
+        <div className="chat-user-info">
+          <h2>
+            {selectedUser.firstName}{" "}
+            {selectedUser.lastName}
+          </h2>
+
+          <span>@{selectedUser.username}</span>
+        </div>
       </header>
 
-      {loading && <p>Loading messages...</p>}
+      {loading && (
+        <p className="chat-status">
+          Loading messages...
+        </p>
+      )}
 
-      {error && <p className="chat-error">{error}</p>}
+      {error && (
+        <p className="chat-error">
+          {error}
+        </p>
+      )}
 
       <div className="messages">
         {messages.map((message) => {
-          const isMine = message.senderId === currentUser.id;
+          const isMine =
+            message.senderId === currentUser.id;
 
           return (
             <div
@@ -116,14 +168,18 @@ function Chat({ selectedUser, currentUser }) {
         <input
           type="text"
           value={content}
-          onChange={(event) => setContent(event.target.value)}
+          onChange={(event) =>
+            setContent(event.target.value)
+          }
           placeholder="Type a message..."
           disabled={sending}
         />
 
         <button
           type="submit"
-          disabled={sending || !content.trim()}
+          disabled={
+            sending || !content.trim()
+          }
         >
           {sending ? "Sending..." : "Send"}
         </button>

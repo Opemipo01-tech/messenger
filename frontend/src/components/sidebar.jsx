@@ -2,7 +2,11 @@ import { useEffect, useState } from "react";
 import { getUsers } from "../services/userApi";
 import "../styles/sidebar.css";
 
-function Sidebar({ token, onSelectUser, selectedUser }) {
+function Sidebar({
+  token,
+  onSelectUser,
+  selectedUser,
+}) {
   const [users, setUsers] = useState([]);
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
@@ -72,7 +76,7 @@ function Sidebar({ token, onSelectUser, selectedUser }) {
               onClick={() => onSelectUser(user)}
             >
               <div className="user-avatar">
-                {user.firstName.charAt(0)}
+                {user.firstName.charAt(0).toUpperCase()}
               </div>
 
               <div className="user-name">
