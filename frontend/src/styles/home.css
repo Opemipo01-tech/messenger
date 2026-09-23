@@ -1,0 +1,121 @@
+.home-page {
+  height: 100vh;
+  display: flex;
+  overflow: hidden;
+  background: #f5f7fb;
+}
+
+.home-main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.home-header {
+  height: 70px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  background: #ffffff;
+  border-bottom: 1px solid #e4e8f0;
+}
+
+.home-header h1 {
+  margin: 0;
+  font-size: 20px;
+}
+
+.logout-button {
+  padding: 9px 15px;
+  border: 1px solid #d7dce5;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #3f4859;
+}
+
+.logout-button:hover {
+  background: #f4f5f8;
+}
+
+.home-content {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+}
+
+@media (max-width: 700px) {
+  .sidebar {
+    width: 90px;
+    padding: 16px 8px;
+  }
+
+  .sidebar-header {
+    padding: 0 4px;
+  }
+
+  .sidebar-header h2 {
+    font-size: 15px;
+    text-align: center;
+  }
+
+  .user-button {
+    justify-content: center;
+    padding: 9px;
+  }
+
+  .user-avatar {
+    margin-right: 0;
+  }
+
+  .user-name {
+    display: none;
+  }
+
+  .sidebar-search {
+    padding: 8px;
+  }
+
+  .chat-header {
+    padding: 16px;
+  }
+
+  .chat-messages {
+    padding: 16px;
+  }
+
+  .message {
+    max-width: 85%;
+  }
+
+  .message-form {
+    padding: 12px;
+  }
+
+  .message-send {
+    padding: 0 14px;
+  }
+}
+.home-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.profile-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 16px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+  background-color: #f1f1f1;
+  color: #222;
+}
+
+.profile-button:hover {
+  background-color: #e5e5e5;
+}

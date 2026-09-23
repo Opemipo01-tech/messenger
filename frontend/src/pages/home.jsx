@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { getCurrentUser } from "../services/authApi";
 import Sidebar from "../components/sidebar";
 import Chat from "../components/chat";
+import "../styles/home.css";
 
 function Home() {
   const navigate = useNavigate();
@@ -49,19 +50,34 @@ function Home() {
   }
 
   return (
-    <main>
-      <Sidebar onSelectUser={handleSelectUser}
+    <main className="home-page">
+      <Sidebar
+        onSelectUser={handleSelectUser}
+        selectedUser={selectedUser}
         token={localStorage.getItem("token")}
       />
 
-      <section>
-        <h1>Hello, {user.firstName}</h1>
+      <section className="home-main">
+        <header className="home-header">
+          <h1>Hello, {user.firstName}</h1>
 
-        <Chat selectedUser={selectedUser} />
+          <div className="home-header-actions">
+            <Link to="/profile" className="profile-button">
+              Profile
+            </Link>
 
-        <button onClick={handleLogout}>
-          Logout
-        </button>
+            <button
+              className="logout-button"
+              onClick={handleLogout}
+            >
+              Logout
+            </button>
+          </div>
+        </header>
+
+        <div className="home-content">
+          <Chat selectedUser={selectedUser} />
+        </div>
       </section>
     </main>
   );

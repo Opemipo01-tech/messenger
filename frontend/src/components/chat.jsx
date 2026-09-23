@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { getMessages, sendMessage } from "../services/messageApi";
+import "../styles/chat.css";
 
 function Chat({ selectedUser }) {
   const [messages, setMessages] = useState([]);
@@ -25,7 +26,6 @@ function Chat({ selectedUser }) {
 
       try {
         const data = await getMessages(selectedUser.id, token);
-
         setMessages(data);
       } catch (error) {
         console.error(error);
@@ -77,32 +77,41 @@ function Chat({ selectedUser }) {
 
   if (!selectedUser) {
     return (
-      <section>
-        <p>Select a user to start chatting.</p>
+      <section className="chat">
+        <div className="chat-empty">
+          <p>Select a user to start chatting.</p>
+        </div>
       </section>
     );
   }
 
   return (
-    <section>
-      <h2>
-        {selectedUser.firstName} {selectedUser.lastName}
-      </h2>
+    <section className="chat">
+      <header className="chat-header">
+        <h2>
+          {selectedUser.firstName} {selectedUser.lastName}
+        </h2>
+      </header>
 
-      {loading && <p>Loading messages...</p>}
+      {loading && (
+        <div className="chat-empty">
+          <p>Loading messages...</p>
+        </div>
+      )}
 
-      {error && <p>{error}</p>}
+      {error && <p className="chat-error">{error}</p>}
 
-      <div>
+      <div className="chat-messages">
         {messages.map((message) => (
-          <div key={message.id}>
+          <div className="message" key={message.id}>
             <p>{message.content}</p>
           </div>
         ))}
       </div>
 
-      <form onSubmit={handleSendMessage}>
+      <form className="message-form" onSubmit={handleSendMessage}>
         <input
+          className="message-input"
           type="text"
           value={content}
           onChange={(event) => setContent(event.target.value)}
@@ -111,6 +120,7 @@ function Chat({ selectedUser }) {
         />
 
         <button
+          className="message-send"
           type="submit"
           disabled={sending || !content.trim()}
         >

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router";
 import { loginUser } from "../services/authApi.js";
+import "../styles/login.css"
 
 function Login() {
   const navigate = useNavigate();
@@ -33,13 +34,22 @@ function Login() {
     }
   }
 
-  return (
-    <main>
-      <h1>Login</h1>
+ return (
+  <main className="auth-page">
+    <section className="auth-card">
+      <h1>Welcome back</h1>
 
-       {error && <p role="alert">{error}</p>}
+      <p className="auth-subtitle">
+        Login to continue messaging.
+      </p>
 
-      <form onSubmit={handleSubmit}>
+      {error && (
+        <p className="auth-error" role="alert">
+          {error}
+        </p>
+      )}
+
+      <form className="auth-form" onSubmit={handleSubmit}>
         <input
           type="text"
           placeholder="Username or email"
@@ -54,17 +64,22 @@ function Login() {
           onChange={(event) => setPassword(event.target.value)}
         />
 
-        <button type="submit" disabled={loading}>
+        <button
+          className="auth-button"
+          type="submit"
+          disabled={loading}
+        >
           {loading ? "Logging in..." : "Login"}
         </button>
       </form>
 
-      <p>
+      <p className="auth-footer">
         Don't have an account?{" "}
         <Link to="/register">Register</Link>
       </p>
-    </main>
-  );
+    </section>
+  </main>
+);
 }
 
 export default Login;

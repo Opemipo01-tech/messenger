@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router";
 import { registerUser } from "../services/authApi.js";
+import "../styles/login.css";
 
 function Register() {
   const navigate = useNavigate();
@@ -42,13 +43,22 @@ function Register() {
     }
   }
 
-  return (
-    <main>
+return (
+  <main className="auth-page">
+    <section className="auth-card">
       <h1>Create account</h1>
 
-       {error && <p role="alert">{error}</p>}
+      <p className="auth-subtitle">
+        Create your account to start messaging.
+      </p>
 
-      <form onSubmit={handleSubmit}>
+      {error && (
+        <p className="auth-error" role="alert">
+          {error}
+        </p>
+      )}
+
+      <form className="auth-form" onSubmit={handleSubmit}>
         <input
           name="firstName"
           placeholder="First name"
@@ -86,17 +96,22 @@ function Register() {
           onChange={handleChange}
         />
 
-        <button type="submit" disabled={loading}>
+        <button
+          className="auth-button"
+          type="submit"
+          disabled={loading}
+        >
           {loading ? "Creating account..." : "Register"}
         </button>
       </form>
 
-      <p>
+      <p className="auth-footer">
         Already have an account?{" "}
         <Link to="/login">Login</Link>
       </p>
-    </main>
-  );
+    </section>
+  </main>
+);
 }
 
 export default Register;

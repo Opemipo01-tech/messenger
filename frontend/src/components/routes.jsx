@@ -2,6 +2,7 @@ import App from "../App"
 import Login from "../pages/login";
 import Register from "../pages/register";
 import Home from "../pages/home";
+import Profile from "./profile";
 
 const routes = [
   {
@@ -19,6 +20,10 @@ const routes = [
       {
         path: "register",
         element: <Register />,
+      },
+      {
+        path: "profile",
+        element: <Profile/>,
       },
     ],
   },
