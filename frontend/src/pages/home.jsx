@@ -4,6 +4,7 @@ import { getCurrentUser } from "../services/authApi";
 import Sidebar from "../components/sidebar";
 import Chat from "../components/chat";
 import "../styles/home.css";
+import { socket } from "../services/socket";
 
 function Home() {
   const navigate = useNavigate();
@@ -36,6 +37,36 @@ function Home() {
 
     loadUser();
   }, [navigate]);
+
+  useEffect(() => {
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    return;
+  }
+
+  // Send the JWT during the Socket.IO handshake.
+  socket.auth = { token };
+
+  function handleConnect() {
+    console.log("Socket connected:", socket.id);
+  }
+
+  function handleConnectError(error) {
+    console.error("Socket connection failed:", error.message);
+  }
+
+  socket.on("connect", handleConnect);
+  socket.on("connect_error", handleConnectError);
+
+  socket.connect();
+
+  return () => {
+    socket.off("connect", handleConnect);
+    socket.off("connect_error", handleConnectError);
+    socket.disconnect();
+  };
+}, []);
 
   function handleLogout() {
     localStorage.removeItem("token");

@@ -5,6 +5,8 @@ import {
 } from "../services/messageApi";
 import "../styles/chat.css";
 
+import { socket } from "../services/socket.js";
+
 function Chat({
   selectedUser,
   currentUser,
@@ -44,6 +46,52 @@ function Chat({
 
     loadMessages();
   }, [selectedUser]);
+
+  useEffect(() => {
+  if (!selectedUser || !currentUser) {
+    return;
+  }
+
+  function handleNewMessage(message) {
+    const belongsToConversation =
+      (
+        message.senderId === currentUser.id &&
+        message.receiverId === selectedUser.id
+      ) ||
+      (
+        message.senderId === selectedUser.id &&
+        message.receiverId === currentUser.id
+      );
+
+    if (!belongsToConversation) {
+      return;
+    }
+
+    setMessages((previousMessages) => {
+      // Avoid adding the same message twice.
+      const alreadyExists = previousMessages.some(
+        (existingMessage) =>
+          existingMessage.id === message.id
+      );
+
+      if (alreadyExists) {
+        return previousMessages;
+      }
+
+      return [...previousMessages, message].sort(
+        (a, b) =>
+          new Date(a.createdAt) -
+          new Date(b.createdAt)
+      );
+    });
+  }
+
+  socket.on("message:new", handleNewMessage);
+
+  return () => {
+    socket.off("message:new", handleNewMessage);
+  };
+}, [selectedUser, currentUser]);
 
   async function handleSendMessage(event) {
     event.preventDefault();

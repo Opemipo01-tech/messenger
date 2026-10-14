@@ -41,15 +41,23 @@ export async function sendMessage(req, res) {
       });
     }
 
-    const message = await prisma.message.create({
-      data: {
-        content,
-        senderId,
-        receiverId: Number(receiverId),
-      },
-    });
+const message = await prisma.message.create({
+  data: {
+    content: content.trim(),
+    senderId,
+    receiverId: Number(receiverId),
+  },
+});
 
-    res.status(201).json(message);
+// Notify the recipient after the message has been saved.
+const io = req.app.get("io");
+
+io.to(`user:${Number(receiverId)}`).emit(
+  "message:new",
+  message
+);
+
+res.status(201).json(message);
   } catch (error) {
     console.error(error);
 
